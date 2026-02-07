@@ -7,6 +7,14 @@ interface BuildTestProps {
   buildTime: number; // Seconds to wait (increases with day)
 }
 
+type Difficulty = 'easy' | 'medium' | 'hard';
+
+const getDifficulty = (buildTime: number): Difficulty => {
+  if (buildTime <= 10) return 'easy';
+  if (buildTime <= 15) return 'medium';
+  return 'hard';
+};
+
 const BUILD_STAGES = [
   '프로젝트 파일 읽는 중...',
   '의존성 검사 중...',
@@ -35,21 +43,26 @@ export const BuildTest = ({ onComplete, buildTime }: BuildTestProps) => {
   const [buildAttempts, setBuildAttempts] = useState(1);
   const [hasFailed, setHasFailed] = useState(false);
   const [isRebuilding, setIsRebuilding] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
+
+  const difficulty = getDifficulty(buildTime);
+  const maxErrors = difficulty === 'easy' ? 0 : difficulty === 'medium' ? 1 : 2;
 
   useEffect(() => {
     if (hasFailed && !isRebuilding) return; // Paused after failure
 
-    // Random failure chance (30% for longer builds)
-    const failureChance = buildTime >= 20 ? 0.3 : buildTime >= 15 ? 0.2 : 0;
+    // Failure chance based on difficulty
+    const failureChance = difficulty === 'hard' ? 0.3 : difficulty === 'medium' ? 0.2 : 0;
     const failurePoint = 60 + Math.random() * 30; // Fail between 60-90%
 
     // Progress simulation
     const progressInterval = setInterval(() => {
       setProgress(prev => {
-        // Check for failure
-        if (!hasFailed && prev >= failurePoint && Math.random() < failureChance) {
+        // Check for failure (only if we haven't exceeded max errors)
+        if (!hasFailed && errorCount < maxErrors && prev >= failurePoint && Math.random() < failureChance) {
           clearInterval(progressInterval);
           setHasFailed(true);
+          setErrorCount(c => c + 1);
           audioManager.playSFX('error');
           setLogs(prevLogs => [
             ...prevLogs,
@@ -107,7 +120,7 @@ export const BuildTest = ({ onComplete, buildTime }: BuildTestProps) => {
       clearInterval(timerInterval);
       clearTimeout(skipTimeout);
     };
-  }, [buildTime, onComplete, hasFailed, isRebuilding]);
+  }, [buildTime, onComplete, hasFailed, isRebuilding, errorCount, maxErrors, difficulty]);
 
   const handleRebuild = () => {
     audioManager.playSFX('click');
