@@ -18,13 +18,8 @@ export const Day = () => {
   const visualDegradation = useGameStore((state) => state.visualDegradation);
   const selectedGenre = useGameStore((state) => state.selectedGenre);
 
-  // Calculate visual config locally
-  const textVerbosity: 'poetic' | 'concise' | 'minimal' =
-    visualDegradation > 70 ? 'minimal' : visualDegradation > 30 ? 'concise' : 'poetic';
-
   // Text degradation effects
   const textOpacity = Math.max(0.7, 1 - visualDegradation * 0.003); // 70% ~ 100%
-  const textBlur = visualDegradation > 50 ? (visualDegradation - 50) * 0.1 : 0; // blur after 50% degradation
 
   const [showMinigame, setShowMinigame] = useState(false);
   const [minigameCompleted, setMinigameCompleted] = useState(false);
@@ -200,28 +195,6 @@ export const Day = () => {
     }
   }
 
-  // Text size based on verbosity
-  const getTitleSize = () => {
-    switch (textVerbosity) {
-      case 'poetic':
-        return 'text-3xl md:text-5xl';
-      case 'concise':
-        return 'text-2xl md:text-4xl';
-      case 'minimal':
-        return 'text-xl md:text-3xl';
-    }
-  };
-
-  const getDescriptionSize = () => {
-    switch (textVerbosity) {
-      case 'poetic':
-        return 'text-base md:text-lg';
-      case 'concise':
-        return 'text-sm md:text-base';
-      case 'minimal':
-        return 'text-xs md:text-sm';
-    }
-  };
 
   // Act 1: Rich, beautiful layout (0-30% degradation)
   if (visualDegradation < 30) {

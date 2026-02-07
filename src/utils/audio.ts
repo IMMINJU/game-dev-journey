@@ -65,7 +65,7 @@ class AudioManager {
     });
   }
 
-  playBGM(track: 'act1' | 'act2' | 'act3', fadeIn: boolean = true) {
+  playBGM(track: 'act1' | 'act2' | 'act3', _fadeIn: boolean = true) {
     // Simple ambient BGM (optional, can be silent for now)
     if (this.currentTrack === track) return;
     this.currentTrack = track;

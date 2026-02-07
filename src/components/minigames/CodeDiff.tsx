@@ -7,19 +7,6 @@ interface CodeDiffProps {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
-interface Cell {
-  hasBug: boolean;
-  isRevealed: boolean;
-  isFlagged: boolean;
-  nearbyBugs: number;
-}
-
-const GRID_CONFIG = {
-  easy: { rows: 5, cols: 5, bugs: 5 },
-  medium: { rows: 6, cols: 6, bugs: 8 },
-  hard: { rows: 8, cols: 8, bugs: 12 },
-};
-
 const DIFF_PAIRS: Record<'easy' | 'medium' | 'hard', any[]> = {
   easy: [
     {
@@ -259,7 +246,7 @@ export const CodeDiff = ({ onComplete, difficulty }: CodeDiffProps) => {
           <div className="bg-green-950/30 rounded-lg border-2 border-green-700/50 p-4">
             <div className="text-xs text-green-400 mb-2 font-bold">✓ 정상 코드</div>
             <div className="font-mono text-xs space-y-1">
-              {currentPair.correct.map((line, index) => (
+              {currentPair.correct.map((line: string, index: number) => (
                 <div
                   key={index}
                   className="text-gray-300 leading-relaxed"
@@ -275,7 +262,7 @@ export const CodeDiff = ({ onComplete, difficulty }: CodeDiffProps) => {
           <div className="bg-red-950/30 rounded-lg border-2 border-red-700/50 p-4">
             <div className="text-xs text-red-400 mb-2 font-bold">✗ 버그 코드</div>
             <div className="font-mono text-xs space-y-1">
-              {currentPair.buggy.map((line, index) => {
+              {currentPair.buggy.map((line: string, index: number) => {
                 const isDiff = currentPair.diffLines.includes(index);
                 const isFound = foundDiffs.includes(index);
 

@@ -154,7 +154,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getVisualConfig: () => {
     const degradation = get().visualDegradation;
-    const day = get().currentDay;
 
     // Visual degradation calculation
     // Act 1 (Day 1-5): 0-10% degradation
