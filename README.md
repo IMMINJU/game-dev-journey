@@ -4,6 +4,9 @@
 
 **[플레이하기](https://game-dev-journey.vercel.app/)**
 
+![title](screenshots/title.png)
+![ingame](screenshots/ingame.png)
+
 ## 컨셉
 
 인디 게임 개발자가 되어 30일 안에 RPG를 출시한다. 완벽주의와 타협 사이에서 매일 선택을 내리고, 그 선택이 게임의 품질과 진행도뿐 아니라 **플레이 중인 이 게임의 인터페이스 자체**를 변화시킨다.
